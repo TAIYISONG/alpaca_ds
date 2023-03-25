@@ -1,0 +1,38 @@
+torchrun --nproc_per_node=<NUMBER_OF_GPUs> --master_port=9776 train.py \
+--model_name_or_path <PATH_OF_LAMMA_7B_MODEL> \
+--data_path ./alpaca_data.json \
+--bf16 False \
+--output_dir <PATH_OF_OUTPUT_DIR_TO_SAVE_THE_CHECKPOINT> \
+--num_train_epochs 3 \
+--per_device_train_batch_size 1  \
+--per_device_eval_batch_size 1  \
+--gradient_accumulation_steps 1  \
+--evaluation_strategy "no"  \
+--save_strategy "steps"  \
+--save_steps 1200  \
+--save_total_limit 2  \
+--learning_rate 2e-5  \
+--weight_decay 0.  \
+--warmup_ratio 0.03 \
+--lr_scheduler_type "cosine"  \
+--logging_steps 1  \
+--deepspeed ds_config.json  \
+--fp16  \
+--tf32 False \
+
+
+# Notes
+# 1. Above "torchrun" script is to execute in command line to start the training job.
+
+# 2. Need to create your python virtual environment, then "pip install -r requirements.txt" 
+    # Please note that you might need to comment out "deepspeed" first in the requirements.txt, as it requires torch to be installed as a prerequisite. Installing "torch" and "deepspeed" first time together will not work.
+
+# 3. Need to download the base model llama_7B first, using "download_llama_7B.py".
+
+# 4. Need to fill the placeholders of the above "torchrun" script:
+    # 1. <NUMBER_OF_GPUs>
+    # 2. <PATH_OF_LAMMA_7B_MODEL> -- the path you specify in "download_llama_7B.py" where the downloaded llama model is saved.
+    # 3. <PATH_OF_OUTPUT_DIR_TO_SAVE_THE_CHECKPOINT>
+
+# 5. You are all set! You can change this file to ".sh" file and execute the torchrun command, or execute it in the command line.
+#    Bring down values of "per_device_train_batch_size" and "gradient_accumulation_steps" can save your memory. I started with value=1 for both.

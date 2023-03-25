@@ -2,8 +2,10 @@ numpy
 rouge_score
 fire
 openai
-transformers>=4.26.1
+transformers @ git+https://github.com/huggingface/transformers
 torch
 sentencepiece
 tokenizers==0.12.1
 wandb
+deepspeed # this needs torch to be installed first, so temporarily comment out in first time installation. Also, deepspeed's support for Windows is bad, as it is mainly run on Linux.
+accelerate
